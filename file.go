@@ -28,10 +28,13 @@ func writeHeader(w io.Writer, path, realpath string) error {
 	_, err := w.Write(header)
 	return err
 }
-func streamfile(w io.Writer, path string) error {
+
+func streamfile(w io.Writer, path string, includeHeader bool) error {
 	realpath := readlink(path)
-	if err := writeHeader(w, path, realpath); err != nil {
-		return err
+	if includeHeader {
+		if err := writeHeader(w, path, realpath); err != nil {
+			return err
+		}
 	}
 	f, err := os.Open(realpath)
 	if err != nil {
@@ -49,8 +52,9 @@ func streamfiles(paths []string) *io.PipeReader {
 	r, w := io.Pipe()
 	go func() {
 		defer w.Close()
+		includeHeaders := len(paths) > 1
 		for _, path := range paths {
-			errCh <- streamfile(w, path)
+			errCh <- streamfile(w, path, includeHeaders)
 		}
 	}()
 	return r
