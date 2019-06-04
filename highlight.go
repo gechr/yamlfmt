@@ -11,13 +11,13 @@ type highlighter struct {
 	Writer  io.Writer
 }
 
-func NewHighlighter(w io.Writer) *highlighter {
+func NewHighlighter(w io.Writer) (*highlighter, error) {
 	if !isTerminal() {
-		return nil
+		return nil, nil
 	}
 	bat, err := exec.LookPath("bat")
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 	cmd := exec.Command(
 		bat,
@@ -27,14 +27,18 @@ func NewHighlighter(w io.Writer) *highlighter {
 		"--plain",
 	)
 	stdin, err := cmd.StdinPipe()
-	errFatal(err)
+	if err != nil {
+		return nil, err
+	}
 	cmd.Stdout = w
-	errFatal(cmd.Start())
+	if err := cmd.Start(); err != nil {
+		return nil, err
+	}
 	return &highlighter{
 		Command: cmd,
 		Stdin:   stdin,
 		Writer:  w,
-	}
+	}, nil
 }
 
 func (h *highlighter) Highlight() error {

@@ -18,12 +18,6 @@ func fatalf(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
-func errFatal(err error) {
-	if err != nil {
-		fatal(err.Error())
-	}
-}
-
 func isTerminal() bool {
 	return isatty.IsTerminal(os.Stdout.Fd())
 }

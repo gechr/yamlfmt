@@ -6,6 +6,10 @@ import (
 	"path/filepath"
 )
 
+const (
+	fileSeparator = "---\n"
+)
+
 func filestream() *io.PipeReader {
 	paths := os.Args[1:]
 	if len(paths) == 0 || paths[0] == "-" {
@@ -27,20 +31,32 @@ func header(w io.Writer, path, realpath string) {
 }
 */
 
+func streamfile(w io.Writer, path string) error {
+	var err error
+	_, err = io.WriteString(w, fileSeparator)
+	if err != nil {
+		return err
+	}
+	realpath := readlink(path)
+	f, err := os.Open(realpath)
+	if err != nil {
+		errCh <- err
+		return err
+	}
+	defer f.Close()
+	_, err = io.Copy(w, f)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func streamfiles(paths []string) *io.PipeReader {
 	r, w := io.Pipe()
 	go func() {
 		defer w.Close()
-		var err error
 		for _, path := range paths {
-			realpath := readlink(path)
-			_, err = io.WriteString(w, "---\n")
-			errFatal(err)
-			f, err := os.Open(realpath)
-			errFatal(err)
-			_, err = io.Copy(w, f)
-			errFatal(err)
-			f.Close()
+			errCh <- streamfile(w, path)
 		}
 	}()
 	return r
