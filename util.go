@@ -12,12 +12,6 @@ func fatal(msg string) {
 	os.Exit(1)
 }
 
-// nolint:deadcode,unused
-func fatalf(format string, a ...interface{}) {
-	fatal(fmt.Sprintf(format, a...))
-	os.Exit(1)
-}
-
 func isTerminal() bool {
 	return isatty.IsTerminal(os.Stdout.Fd())
 }

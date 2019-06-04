@@ -13,19 +13,15 @@ var (
 	defaultWriter = os.Stdout
 )
 
-type yml struct {
-	Data map[string]interface{} `yaml:",inline,omitempty"`
-}
-
 type formatter struct {
-	data       yml
+	data       yaml.Node `yaml:",inline,omitempty"`
 	decodeFunc func(interface{}) error
 	encodeFunc func(interface{}) error
 }
 
 func NewFormatter() *formatter {
 	f := &formatter{
-		data: yml{},
+		data: yaml.Node{},
 	}
 	// By default, read from stdin and write to stdout
 	f.SetReader(defaultReader)

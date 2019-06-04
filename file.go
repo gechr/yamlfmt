@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	fileSeparator = "---\n"
+	fileSeparator = "\n---\n"
 )
 
 func filestream() *io.PipeReader {
@@ -18,34 +18,28 @@ func filestream() *io.PipeReader {
 	return streamfiles(paths)
 }
 
-/*
-// Need to rethink this. Currently does not work because the `yaml.Decode`
-// strips comments!
-func header(w io.Writer, path, realpath string) {
-	h := []byte("---\n# " + path)
-    if path != realpath {
-		h = append(h, " -> "+realpath...)
-    }
-    _, err := w.Write(h)
-    errFatal(err)
+func writeHeader(w io.Writer, path, realpath string) error {
+	header := []byte("# " + path)
+	if path != realpath {
+		symlink := " -> " + realpath
+		header = append(header, symlink...)
+	}
+	header = append(header, fileSeparator...)
+	_, err := w.Write(header)
+	return err
 }
-*/
-
 func streamfile(w io.Writer, path string) error {
-	var err error
-	_, err = io.WriteString(w, fileSeparator)
-	if err != nil {
+	realpath := readlink(path)
+	if err := writeHeader(w, path, realpath); err != nil {
 		return err
 	}
-	realpath := readlink(path)
 	f, err := os.Open(realpath)
 	if err != nil {
 		errCh <- err
 		return err
 	}
 	defer f.Close()
-	_, err = io.Copy(w, f)
-	if err != nil {
+	if _, err := io.Copy(w, f); err != nil {
 		return err
 	}
 	return nil
