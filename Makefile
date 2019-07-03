@@ -12,6 +12,6 @@ test:
 	go test -race ./...
 
 update:
-	go get -u
 	go mod tidy
+	go get -u
 	@go build -o $(TMPDIR)/main
