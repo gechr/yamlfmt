@@ -12,12 +12,19 @@ var (
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	go run(ctx, cancel)
+	go run(cancel)
 	exit(ctx)
 }
 
-func run(ctx context.Context, cancel context.CancelFunc) {
+func run(cancel context.CancelFunc) {
 	f := NewFormatter()
+
+	if flagWrite {
+		errCh <- writefiles(f)
+		cancel()
+		return
+	}
+
 	stream := filestream()
 	if stream != nil {
 		f.SetReader(stream)
@@ -26,8 +33,11 @@ func run(ctx context.Context, cancel context.CancelFunc) {
 	h, err := NewHighlighter(os.Stdout)
 	if err != nil {
 		errCh <- err
+		cancel()
 		return
 	}
+
+	// No highlighter, just stream to stdout and return
 	if h == nil {
 		errCh <- f.Format()
 		cancel()

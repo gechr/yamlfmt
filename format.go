@@ -8,24 +8,20 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var (
-	defaultReader = os.Stdin
-	defaultWriter = os.Stdout
-)
-
 type formatter struct {
 	data       yaml.Node `yaml:",inline,omitempty"`
 	decodeFunc func(interface{}) error
 	encodeFunc func(interface{}) error
 }
 
+// nolint:golint
 func NewFormatter() *formatter {
 	f := &formatter{
 		data: yaml.Node{},
 	}
 	// By default, read from stdin and write to stdout
-	f.SetReader(defaultReader)
-	f.SetWriter(defaultWriter)
+	f.SetReader(os.Stdin)
+	f.SetWriter(os.Stdout)
 	return f
 }
 

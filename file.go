@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -10,8 +11,37 @@ const (
 	fileSeparator = "\n---\n"
 )
 
+func writefiles(f *formatter) error {
+	paths := args()
+	for _, path := range paths {
+		// Input
+		dst, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		f.SetReader(dst)
+		defer dst.Close()
+		// Output
+		bak, err := ioutil.TempFile(filepath.Dir(path), filepath.Base(path)+".*")
+		if err != nil {
+			return err
+		}
+		f.SetWriter(bak)
+		defer bak.Close()
+		// Format
+		if err := f.Format(); err != nil {
+			return err
+		}
+		// Cleanup
+		if err := os.Rename(bak.Name(), dst.Name()); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func filestream() *io.PipeReader {
-	paths := os.Args[1:]
+	paths := args()
 	if len(paths) == 0 || paths[0] == "-" {
 		return nil
 	}
@@ -38,7 +68,6 @@ func streamfile(w io.Writer, path string, includeHeader bool) error {
 	}
 	f, err := os.Open(realpath)
 	if err != nil {
-		errCh <- err
 		return err
 	}
 	defer f.Close()

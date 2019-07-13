@@ -22,7 +22,3 @@ $ yamlfmt example_1.yaml example_2.yaml example_3.yaml
 $ yamlfmt < example_1.yaml
 $ echo "foo: bar" | yamlfmt
 ```
-
-## TODO
-
-- Add `-w/--write` flag to write formatted YAML back to the source file (instead of stdout)

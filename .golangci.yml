@@ -1,2 +1,5 @@
-issues:
+linters:
   enable-all: true
+
+issues:
+  exclude-use-default: true

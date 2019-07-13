@@ -13,6 +13,10 @@ type highlighter struct {
 }
 
 func shouldHighlight() bool {
+	// Highlighting does not make sense when writing to a file
+	if flagWrite {
+		return false
+	}
 	// If NO_COLOR is set, do not highlight (https://no-color.org/)
 	if _, nc := os.LookupEnv("NO_COLOR"); nc {
 		return false
@@ -33,6 +37,7 @@ func findBat() string {
 	return bat
 }
 
+// nolint:golint
 func NewHighlighter(w io.Writer) (*highlighter, error) {
 	if !shouldHighlight() {
 		return nil, nil
