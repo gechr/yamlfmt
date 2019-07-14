@@ -19,8 +19,8 @@ func main() {
 func run(cancel context.CancelFunc) {
 	f := NewFormatter()
 
-	if flagWrite {
-		errCh <- writefiles(f)
+	if flagWrite || flagDiff {
+		errCh <- processfiles(f)
 		cancel()
 		return
 	}

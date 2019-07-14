@@ -1,5 +1,8 @@
 linters:
   enable-all: true
+  disable:
+    - gochecknoglobals
+    - gochecknoinits
 
 issues:
   exclude-use-default: true

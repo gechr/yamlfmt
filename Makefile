@@ -15,3 +15,4 @@ update:
 	go mod tidy
 	go get -u
 	@go build -o $(TMPDIR)/main
+	@git diff -- go.mod go.sum || :
