@@ -53,7 +53,7 @@ func backupCleaner() {
 	}()
 }
 
-func processfiles(f *formatter) error {
+func processfiles(f *Formatter) error {
 	backupCleaner()
 	paths := args()
 	if len(paths) == 0 || paths[0] == "-" {

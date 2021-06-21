@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
+	"io"
 	"os"
 )
 
-var (
-	errCh = make(chan error)
-)
+var errCh = make(chan error)
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -25,29 +24,26 @@ func run(cancel context.CancelFunc) {
 		return
 	}
 
-	stream := filestream()
-	if stream != nil {
-		f.SetReader(stream)
+	if fs := filestream(); fs != nil {
+		f.SetReader(fs)
 	}
 
-	h, err := NewHighlighter(os.Stdout)
-	if err != nil {
-		errCh <- err
-		cancel()
-		return
-	}
+	h := NewHighlighter()
 
-	// No highlighter, just stream to stdout and return
+	// No highlighter, just stream to stdout and return.
 	if h == nil {
 		errCh <- f.Format()
 		cancel()
 		return
 	}
 
-	// Pipe the output of the formatter to the highlighter
-	f.SetWriter(h.Stdin)
+	// Wire up the output of the formatter to the highlighter.
+	reader, writer := io.Pipe()
+	f.SetWriter(writer)
+	h.SetReader(reader)
+
 	go func() {
-		defer h.Stdin.Close()
+		defer writer.Close()
 		errCh <- f.Format()
 	}()
 

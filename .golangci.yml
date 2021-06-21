@@ -1,8 +1,17 @@
 linters:
   enable-all: true
   disable:
+    - cyclop
+    - exhaustivestruct
+    - forbidigo
     - gochecknoglobals
     - gochecknoinits
+    - golint
+    - interfacer
+    - maligned
+    - nlreturn
+    - scopelint
+    - wrapcheck
     - wsl
 
 issues:
