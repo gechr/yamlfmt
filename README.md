@@ -4,8 +4,6 @@
 
 Data can be read from standard input or a list of file names.
 
-If [`bat`](https://github.com/sharkdp/bat) is installed, it will automatically be used for syntax highlighting.
-
 ## Installation
 
 ```sh
