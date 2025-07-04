@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/pkg/errors"
 )
 
 var (
@@ -57,13 +56,13 @@ func processfiles(f *Formatter) error {
 	backupCleaner()
 	paths := args()
 	if len(paths) == 0 || paths[0] == "-" {
-		return errors.New(`cannot use "--diff" or "--write" when reading from stdin`)
+		return fmt.Errorf(`cannot use "--diff" or "--write" when reading from stdin`)
 	}
 	for _, path := range paths {
 		// Input
 		dst, err := os.Open(path)
 		if err != nil {
-			return errors.Wrapf(err, "failed to read file [%s]", path)
+			return fmt.Errorf("failed to read file [%s]: %w", path, err)
 		}
 		f.SetReader(dst)
 		defer dst.Close()
@@ -71,29 +70,29 @@ func processfiles(f *Formatter) error {
 		bak, err := ioutil.TempFile(filepath.Dir(path), filepath.Base(path)+".*")
 		bakName = bak.Name()
 		if err != nil {
-			return errors.Wrap(err, "failed to create temp file")
+			return fmt.Errorf("failed to create temp file: %w", err)
 		}
 		f.SetWriter(bak)
 		defer bak.Close()
 		// Format
 		if err := f.Format(); err != nil {
-			return errors.Wrapf(err, "failed to format file [%s]", path)
+			return fmt.Errorf("failed to format file [%s]: %w", path, err)
 		}
 		// Diff
 		if flagDiff {
 			if err := diff(dst.Name(), bakName); err != nil {
-				return errors.Wrapf(err, "failed to diff file [%s] with [%s]", dst.Name(), bakName)
+				return fmt.Errorf("failed to diff file [%s] with [%s]: %w", dst.Name(), bakName, err)
 			}
 			if !flagWrite {
 				if err := os.Remove(bak.Name()); err != nil {
-					return errors.Wrapf(err, "failed to delete file [%s]", bak.Name())
+					return fmt.Errorf("failed to delete file [%s]: %w", bak.Name(), err)
 				}
 			}
 		}
 		// Write
 		if flagWrite {
 			if err := os.Rename(bakName, dst.Name()); err != nil {
-				return errors.Wrapf(err, "failed to rename file [%s] to [%s]", bakName, dst.Name())
+				return fmt.Errorf("failed to rename file [%s] to [%s]: %w", bakName, dst.Name(), err)
 			}
 		}
 		bakName = ""

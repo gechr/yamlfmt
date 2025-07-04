@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"gopkg.in/yaml.v3"
+	"github.com/goccy/go-yaml"
 )
 
 const (
@@ -14,15 +14,13 @@ const (
 )
 
 type Formatter struct {
-	data       yaml.Node `yaml:",inline,omitempty"`
-	decodeFunc func(interface{}) error
-	encodeFunc func(interface{}) error
+	data       any
+	decodeFunc func(any) error
+	encodeFunc func(any) error
 }
 
 func NewFormatter() *Formatter {
-	f := &Formatter{
-		data: yaml.Node{},
-	}
+	f := &Formatter{}
 	// By default, read from stdin and write to stdout.
 	f.SetReader(os.Stdin)
 	f.SetWriter(os.Stdout)
@@ -35,8 +33,11 @@ func (f *Formatter) SetReader(r io.Reader) {
 }
 
 func (f *Formatter) SetWriter(w io.Writer) {
-	enc := yaml.NewEncoder(w)
-	enc.SetIndent(indent)
+	enc := yaml.NewEncoder(
+		w,
+		yaml.Indent(indent),
+		yaml.IndentSequence(true),
+	)
 	f.encodeFunc = enc.Encode
 }
 

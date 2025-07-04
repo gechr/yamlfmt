@@ -4,9 +4,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/quick"
-	"github.com/alecthomas/chroma/styles"
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/quick"
+	"github.com/alecthomas/chroma/v2/styles"
 )
 
 type Highlighter struct {
@@ -67,7 +67,6 @@ func registerStyle() {
 	)
 }
 
-// nolint:golint
 func NewHighlighter() *Highlighter {
 	if !shouldHighlight() {
 		return nil
