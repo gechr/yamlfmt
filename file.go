@@ -3,13 +3,11 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"syscall"
-
 )
 
 var (
@@ -67,7 +65,7 @@ func processfiles(f *Formatter) error {
 		f.SetReader(dst)
 		defer dst.Close()
 		// Output
-		bak, err := ioutil.TempFile(filepath.Dir(path), filepath.Base(path)+".*")
+		bak, err := os.CreateTemp(filepath.Dir(path), filepath.Base(path)+".*")
 		bakName = bak.Name()
 		if err != nil {
 			return fmt.Errorf("failed to create temp file: %w", err)
