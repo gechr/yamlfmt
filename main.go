@@ -2,65 +2,41 @@ package main
 
 import (
 	"context"
-	"io"
+	"errors"
+	"fmt"
 	"os"
 )
 
-var errCh = make(chan error)
-
 func main() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	parseFlags()
-	go run(ctx, cancel)
-	exit(ctx)
-}
-
-func run(ctx context.Context, cancel context.CancelFunc) {
-	f := NewFormatter()
-
-	if flagWrite || flagDiff {
-		errCh <- processfiles(ctx, f)
-		cancel()
-		return
-	}
-
-	if fs := filestream(); fs != nil {
-		f.SetReader(fs)
-	}
-
-	h := NewHighlighter()
-
-	// No highlighter, just stream to stdout and return.
-	if h == nil {
-		errCh <- f.Format()
-		cancel()
-		return
-	}
-
-	// Wire up the output of the formatter to the highlighter.
-	reader, writer := io.Pipe()
-	f.SetWriter(writer)
-	h.SetReader(reader)
-
-	go func() {
-		defer writer.Close()
-		errCh <- f.Format()
-	}()
-
-	errCh <- h.Highlight()
-	cancel()
-}
-
-func exit(ctx context.Context) {
-	for {
-		select {
-		case <-ctx.Done():
-			os.Exit(0)
-		case err := <-errCh:
-			if err != nil {
-				fatal(err.Error())
-			}
+	err := run(parseFlags())
+	if err != nil {
+		if _, ok := errors.AsType[*signalError](err); !ok {
+			fmt.Fprintln(os.Stderr, err)
 		}
 	}
+	os.Exit(exitCode(err))
+}
+
+func run(opts options) error {
+	if opts.diff || opts.write {
+		ctx, stop := notifyContext(context.Background())
+		defer stop()
+		return rewriteFiles(ctx, os.Stdout, opts)
+	}
+	var hl *highlighter
+	if useColor() {
+		hl = newHighlighter()
+	}
+	return printFiles(os.Stdout, os.Stdin, opts.paths, hl)
+}
+
+// exitCode returns the process exit status for the result of run.
+func exitCode(err error) int {
+	if err == nil {
+		return 0
+	}
+	if sigErr, ok := errors.AsType[*signalError](err); ok {
+		return sigErr.exitCode()
+	}
+	return 1
 }

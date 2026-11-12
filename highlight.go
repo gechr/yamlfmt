@@ -1,38 +1,33 @@
 package main
 
 import (
+	"bytes"
 	"io"
-	"os"
 
 	"github.com/alecthomas/chroma/v2"
-	"github.com/alecthomas/chroma/v2/quick"
-	"github.com/alecthomas/chroma/v2/styles"
+	"github.com/alecthomas/chroma/v2/formatters"
+	"github.com/alecthomas/chroma/v2/lexers"
+	"github.com/gechr/x/terminal"
 )
 
-type Highlighter struct {
-	reader io.Reader
-	writer io.Writer
+// highlighter colours YAML for a terminal. It is safe for concurrent use.
+type highlighter struct {
+	formatter chroma.Formatter
+	lexer     chroma.Lexer
+	style     *chroma.Style
 }
 
-func shouldHighlight() bool {
-	// Highlighting does not make sense when writing to a file.
-	if flagWrite {
-		return false
+func newHighlighter() *highlighter {
+	// Terminals without true-colour support show 24-bit escapes in the
+	// wrong colours, or not at all.
+	formatter := formatters.TTY256
+	if terminal.SupportsTrueColor() {
+		formatter = formatters.TTY16m
 	}
-	// If `NO_COLOR` is set, do not highlight (https://no-color.org/).
-	if _, nc := os.LookupEnv("NO_COLOR"); nc {
-		return false
-	}
-	// If not attached to a terminal, do not highlight.
-	if !isTerminal() {
-		return false
-	}
-	return true
-}
-
-func registerStyle() {
-	styles.Fallback = styles.Register(
-		chroma.MustNewStyle(
+	return &highlighter{
+		formatter: formatter,
+		lexer:     chroma.Coalesce(lexers.Get("yaml")),
+		style: chroma.MustNewStyle(
 			"yamlfmt",
 			chroma.StyleEntries{ //nolint:exhaustive // unlisted token types inherit from their parent
 				chroma.Text:                "#f8f8f2",
@@ -64,40 +59,20 @@ func registerStyle() {
 				chroma.Background:          "bg:#272822",
 			},
 		),
-	)
-}
-
-func NewHighlighter() *Highlighter {
-	if !shouldHighlight() {
-		return nil
-	}
-
-	registerStyle()
-
-	return &Highlighter{
-		reader: os.Stdin,
-		writer: os.Stdout,
 	}
 }
 
-func (h *Highlighter) SetReader(r io.Reader) {
-	h.reader = r
-}
-
-func (h *Highlighter) SetWriter(w io.Writer) {
-	h.writer = w
-}
-
-func (h *Highlighter) Highlight() error {
-	b, err := io.ReadAll(h.reader)
+// write highlights src and writes it to w. The formatter writes one escape
+// sequence per token, so the result is collected first and written once.
+func (h *highlighter) write(w io.Writer, src []byte) error {
+	tokens, err := h.lexer.Tokenise(nil, string(src))
 	if err != nil {
 		return err
 	}
-	return quick.Highlight(
-		h.writer,
-		string(b),
-		"yaml",
-		"terminal16m",
-		"",
-	)
+	var buf bytes.Buffer
+	if err = h.formatter.Format(&buf, h.style, tokens); err != nil {
+		return err
+	}
+	_, err = w.Write(buf.Bytes())
+	return err
 }

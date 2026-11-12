@@ -12,3 +12,6 @@ linters:
         ruleguard:
           failOn: all
           rules: gorules/format.go
+  exclusions:
+    paths:
+      - internal/yaml

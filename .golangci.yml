@@ -204,6 +204,7 @@ linters:
       - third_party$
       - builtin$
       - examples$
+      - internal/yaml
 issues:
   max-same-issues: 50
 formatters:
@@ -218,3 +219,4 @@ formatters:
       - third_party$
       - builtin$
       - examples$
+      - internal/yaml
