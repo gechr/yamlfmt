@@ -4,23 +4,23 @@ import (
 	flag "github.com/spf13/pflag"
 )
 
-var (
-	flagDiff  bool
-	flagWrite bool
-)
+type options struct {
+	diff  bool
+	write bool
+	paths []string
+}
 
-func parseFlags() {
-	flag.BoolVarP(&flagDiff, "diff", "d", false, "display diffs instead of rewriting files")
+func parseFlags() options {
+	var opts options
+	flag.BoolVarP(&opts.diff, "diff", "d", false, "display diffs instead of rewriting files")
 	flag.BoolVarP(
-		&flagWrite,
+		&opts.write,
 		"write",
 		"w",
 		false,
 		"write result to (source) file instead of stdout",
 	)
 	flag.Parse()
-}
-
-func args() []string {
-	return flag.Args()
+	opts.paths = flag.Args()
+	return opts
 }
