@@ -1,18 +1,35 @@
-TMPDIR = $(shell mktemp -d)
+GO       ?= go
+GO_TOOLS ?= $(shell $(GO) list tool)
 
-all: lint install
+DIST_DIR ?= dist
 
+.PHONY: all
+all: fmt lint test
+
+.PHONY: fmt
+fmt:
+	@$(GO) fix ./...
+	@$(GO) tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint fmt --enable=gci,golines,gofumpt
+	@$(GO) tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run --fix -c .golangci.ruleguard.yml
+
+.PHONY: build
+build:
+	@$(GO) build -o $(DIST_DIR)/yamlfmt .
+
+.PHONY: install
 install:
-	go install
+	@$(GO) install
 
+.PHONY: lint
 lint:
-	golangci-lint run
+	@$(GO) tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run
 
+.PHONY: test
 test:
-	go test -race ./...
+	@$(GO) test -timeout 30s -race ./...
 
+.PHONY: update
 update:
-	go mod tidy
-	go get -u
-	@go build -o $(TMPDIR)/main
-	@git diff -- go.mod || :
+	@clover run
+	@$(GO) get $(GO_TOOLS) $(shell $(GO) list -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)
+	@$(GO) mod tidy

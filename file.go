@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -20,8 +21,9 @@ const (
 	fileSeparator = "\n---\n"
 )
 
-func diff(before, after string) error {
-	data, err := exec.Command(
+func diff(ctx context.Context, before, after string) error {
+	data, err := exec.CommandContext(
+		ctx,
 		"git",
 		"diff",
 		"--no-index",
@@ -50,7 +52,7 @@ func backupCleaner() {
 	}()
 }
 
-func processfiles(f *Formatter) error {
+func processfiles(ctx context.Context, f *Formatter) error {
 	backupCleaner()
 	paths := args()
 	if len(paths) == 0 || paths[0] == "-" {
@@ -78,8 +80,13 @@ func processfiles(f *Formatter) error {
 		}
 		// Diff
 		if flagDiff {
-			if err := diff(dst.Name(), bakName); err != nil {
-				return fmt.Errorf("failed to diff file [%s] with [%s]: %w", dst.Name(), bakName, err)
+			if err := diff(ctx, dst.Name(), bakName); err != nil {
+				return fmt.Errorf(
+					"failed to diff file [%s] with [%s]: %w",
+					dst.Name(),
+					bakName,
+					err,
+				)
 			}
 			if !flagWrite {
 				if err := os.Remove(bak.Name()); err != nil {
@@ -90,7 +97,12 @@ func processfiles(f *Formatter) error {
 		// Write
 		if flagWrite {
 			if err := os.Rename(bakName, dst.Name()); err != nil {
-				return fmt.Errorf("failed to rename file [%s] to [%s]: %w", bakName, dst.Name(), err)
+				return fmt.Errorf(
+					"failed to rename file [%s] to [%s]: %w",
+					bakName,
+					dst.Name(),
+					err,
+				)
 			}
 		}
 		bakName = ""

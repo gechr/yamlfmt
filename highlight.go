@@ -34,7 +34,7 @@ func registerStyle() {
 	styles.Fallback = styles.Register(
 		chroma.MustNewStyle(
 			"yamlfmt",
-			chroma.StyleEntries{
+			chroma.StyleEntries{ //nolint:exhaustive // unlisted token types inherit from their parent
 				chroma.Text:                "#f8f8f2",
 				chroma.Error:               "#960050 bg:#1e0010",
 				chroma.Comment:             "#75715e",

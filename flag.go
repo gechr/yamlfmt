@@ -9,9 +9,15 @@ var (
 	flagWrite bool
 )
 
-func init() {
+func parseFlags() {
 	flag.BoolVarP(&flagDiff, "diff", "d", false, "display diffs instead of rewriting files")
-	flag.BoolVarP(&flagWrite, "write", "w", false, "write result to (source) file instead of stdout")
+	flag.BoolVarP(
+		&flagWrite,
+		"write",
+		"w",
+		false,
+		"write result to (source) file instead of stdout",
+	)
 	flag.Parse()
 }
 

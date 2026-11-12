@@ -11,15 +11,16 @@ var errCh = make(chan error)
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	go run(cancel)
+	parseFlags()
+	go run(ctx, cancel)
 	exit(ctx)
 }
 
-func run(cancel context.CancelFunc) {
+func run(ctx context.Context, cancel context.CancelFunc) {
 	f := NewFormatter()
 
 	if flagWrite || flagDiff {
-		errCh <- processfiles(f)
+		errCh <- processfiles(ctx, f)
 		cancel()
 		return
 	}
