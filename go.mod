@@ -4,8 +4,8 @@ go 1.27.4
 
 require (
 	github.com/alecthomas/chroma/v2 v2.27.0
-	github.com/gechr/gorules v0.0.4
-	github.com/gechr/x v0.7.0
+	github.com/gechr/gorules v0.0.5
+	github.com/gechr/x v0.7.2
 	github.com/quasilyte/go-ruleguard/dsl v0.3.23
 	github.com/spf13/pflag v1.1.0
 	github.com/stretchr/testify v1.12.1
@@ -14,7 +14,7 @@ require (
 require (
 	4d63.com/gocheckcompilerdirectives v1.4.0 // indirect
 	4d63.com/gochecknoglobals v0.2.2 // indirect
-	charm.land/lipgloss/v2 v2.1.0 // indirect
+	charm.land/lipgloss/v2 v2.1.1 // indirect
 	codeberg.org/chavacava/garif v0.2.1 // indirect
 	codeberg.org/polyfloyd/go-errorlint v1.9.0 // indirect
 	dev.gaijin.team/go/exhaustruct/v4 v4.0.0 // indirect

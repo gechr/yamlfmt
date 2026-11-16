@@ -18,7 +18,7 @@
 # Common Keys:
 #   name - Test case name (string)
 #   yaml - Input YAML string to unmarshal
-#   type - Go type to unmarshal into (e.g., "map[string]any", "[]int")
+#   type - Go type to unmarshal into (e.g. "map[string]any", "[]int")
 #   want - Expected result after unmarshaling (YAML representation)
 #
 # Data Types:

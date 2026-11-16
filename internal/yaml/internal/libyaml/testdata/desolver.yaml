@@ -14,7 +14,7 @@
 # Field Descriptions:
 #   name: Human-readable test name
 #   node: Input node to desolve
-#     tag: YAML tag (e.g., "!!int", "!!str", "!custom")
+#     tag: YAML tag (e.g. "!!int", "!!str", "!custom")
 #     value: Scalar value
 #     kind: Node kind (Scalar, Mapping, Sequence) - defaults to Scalar
 #     style: Node style (Tagged, SingleQuoted, etc.)

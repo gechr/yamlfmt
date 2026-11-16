@@ -2,8 +2,8 @@
 4d63.com/gocheckcompilerdirectives v1.4.0/go.mod h1:9ZOAiMOjqC/nRwci2fcUXVHUNLG/cH6r6rhUh+jTFtQ=
 4d63.com/gochecknoglobals v0.2.2 h1:H1vdnwnMaZdQW/N+NrkT1SZMTBmcwHe9Vq8lJcYYTtU=
 4d63.com/gochecknoglobals v0.2.2/go.mod h1:lLxwTQjL5eIesRbvnzIP3jZtG140FnTdz+AlMa+ogt0=
-charm.land/lipgloss/v2 v2.1.0 h1:RLCNLhSQST+NPOmvUSbRWZ3UFOXsf3ZXFmJ5E/2tHEU=
-charm.land/lipgloss/v2 v2.1.0/go.mod h1:wwfOgrNqUA9yjL8nmG6BIO0qQnmkEgJ8ISptbme83gI=
+charm.land/lipgloss/v2 v2.1.1 h1:F+vKWis9Kz3MFRsbICSDFtT1ZwVL+8f+36Dtg+OpKwc=
+charm.land/lipgloss/v2 v2.1.1/go.mod h1:k79y/56yThpkJvbwyrcHr8MyZF42e84Q5fW9Ibu6LFc=
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.38.0/go.mod h1:990N+gfupTy94rShfmMCWGDn0LpTmnzTp2qbd1dvSRU=
@@ -192,10 +192,10 @@ github.com/fsnotify/fsnotify v1.9.0 h1:2Ml+OJNzbYCTzsxtv8vKSFD9PbJjmhYF14k/jKC7S
 github.com/fsnotify/fsnotify v1.9.0/go.mod h1:8jBTzvmWwFyi3Pb8djgCCO5IBqzKJ/Jwo8TRcHyHii0=
 github.com/fzipp/gocyclo v0.6.0 h1:lsblElZG7d3ALtGMx9fmxeTKZaLLpU8mET09yN4BBLo=
 github.com/fzipp/gocyclo v0.6.0/go.mod h1:rXPyn8fnlpa0R2csP/31uerbiVBugk5whMdlyaLkLoA=
-github.com/gechr/gorules v0.0.4 h1:ZEley6gGlq0lv0d5lpeMITSlNQBgZzA4/1tYiibjwrM=
-github.com/gechr/gorules v0.0.4/go.mod h1:1TeShoEsROq9tmw11MJlNyS1IqFulD9hg3xAZBt/wAo=
-github.com/gechr/x v0.7.0 h1:5HpjyRZW+ChFXc5/1WUWQhW8xYQ8vrwtzqnN9nR9lII=
-github.com/gechr/x v0.7.0/go.mod h1:YvFbO/oqehAwt+ANDxS4tsgsjkWGQRgza9ZtGmm+U1k=
+github.com/gechr/gorules v0.0.5 h1:7I8bc1qsrxAflgzk/8+h+lpFrwaVTCiCA88wntIHo18=
+github.com/gechr/gorules v0.0.5/go.mod h1:1TeShoEsROq9tmw11MJlNyS1IqFulD9hg3xAZBt/wAo=
+github.com/gechr/x v0.7.2 h1:7gBncXOxaTVEiUqSJTN17ChyTT+4M6u7oczbLH7VVVM=
+github.com/gechr/x v0.7.2/go.mod h1:WC7cgDYhBJX+ZhRy1sPg0/WxPAPqrE4mtzdTUUjP5zw=
 github.com/ghostiam/protogetter v1.0.1 h1:q4LLTx2KJHJpxrfO3BniUDWoFkoqWD/UlHhClBlUlLM=
 github.com/ghostiam/protogetter v1.0.1/go.mod h1:50Fh5yZfs6SFGrd1FlmT04NcguyEOxyjNK5zGD6/EvM=
 github.com/go-critic/go-critic v0.15.0 h1:MDUZIQKytIl+vPEc0Igw51m4uLTdi1ZGz2jatEqNs1g=

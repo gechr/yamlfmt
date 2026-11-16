@@ -46,7 +46,7 @@ type LoadError struct {
 
 	// Mark is the primary position in the input where the error occurred.
 	Mark Mark
-	// ContextMark is an optional context position (e.g., start of construct)
+	// ContextMark is an optional context position (e.g. start of construct)
 	ContextMark Mark
 	// ContextMsg is an optional message describing the context of the error.
 	ContextMsg string

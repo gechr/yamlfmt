@@ -642,7 +642,7 @@
           indented tail
 # Regression tests for block scalars whose first non-empty line is indented.
 # These pin the emitted text: the explicit indentation indicator must be
-# kept so the output stays parseable — the harness parses this same text
+# kept so the output stays parseable - the harness parses this same text
 # as its input, and the Go round-trip tests decode the encoder's output
 # directly.
 - roundtrip:

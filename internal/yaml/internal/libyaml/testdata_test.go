@@ -26,7 +26,7 @@ import (
 // NodeSpec describes an input node for pipeline stage tests.
 // Used in nested test format for representer, desolver, and serializer tests.
 type NodeSpec struct {
-	Tag     string `yaml:"tag"`     // YAML tag (e.g., "!!int", "!!str")
+	Tag     string `yaml:"tag"`     // YAML tag (e.g. "!!int", "!!str")
 	Value   string `yaml:"value"`   // Scalar value
 	Kind    string `yaml:"kind"`    // Node kind: Scalar, Mapping, Sequence, Document
 	Style   string `yaml:"style"`   // Style: Tagged, SingleQuoted, DoubleQuoted, Flow
@@ -55,7 +55,7 @@ type TestCase struct {
 	InputBytes string      `yaml:"input_bytes"`
 	From       any         `yaml:"from"` // Input data for tests
 	Want       any         `yaml:"want"` // Expected output
-	Also       string      `yaml:"also"` // Test modifiers (e.g., "unwrap")
+	Also       string      `yaml:"also"` // Test modifiers (e.g. "unwrap")
 	Like       string      `yaml:"like"` // Regex pattern to match error message
 	WantSpecs  []EventSpec // Populated from Want for detailed tests
 

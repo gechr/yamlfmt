@@ -48,7 +48,7 @@ func init() {
 	}
 }
 
-// shortTag converts a long-form tag to its short form (e.g., "tag:yaml.org,2002:str" to "!!str").
+// shortTag converts a long-form tag to its short form (e.g. "tag:yaml.org,2002:str" to "!!str").
 func shortTag(tag string) string {
 	if strings.HasPrefix(tag, longTagPrefix) {
 		if stag, ok := shortTags[tag]; ok {
@@ -59,7 +59,7 @@ func shortTag(tag string) string {
 	return tag
 }
 
-// longTag converts a short-form tag to its long form (e.g., "!!str" to "tag:yaml.org,2002:str").
+// longTag converts a short-form tag to its long form (e.g. "!!str" to "tag:yaml.org,2002:str").
 func longTag(tag string) string {
 	if strings.HasPrefix(tag, "!!") {
 		if ltag, ok := longTags[tag]; ok {

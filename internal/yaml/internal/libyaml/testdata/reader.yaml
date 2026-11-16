@@ -36,7 +36,7 @@
 #          * eq: [field, value]      - Equals (supports constants like UTF8_ENCODING or hex like 0x61)
 #          * len-gt: [field, N]      - Length greater than N
 #          * gte: [field, N]         - Greater than or equal to N
-#          * eq: [buffer-N, X]       - Check byte at index N equals X (e.g., eq: [buffer-0, 0x61])
+#          * eq: [buffer-N, X]       - Check byte at index N equals X (e.g. eq: [buffer-0, 0x61])
 
 # setReaderError tests
 - reader-set-error:

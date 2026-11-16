@@ -20,7 +20,7 @@
 # Common Keys:
 #   name - Test case name (string)
 #   data - Go value to marshal (YAML representation)
-#   type - Go type of the value (e.g., "map[string]any", "[]string")
+#   type - Go type of the value (e.g. "map[string]any", "[]string")
 #   want - Expected YAML output (string, typically using | for multiline)
 #
 # Data Types:

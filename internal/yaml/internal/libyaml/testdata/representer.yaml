@@ -15,7 +15,7 @@
 #   from: Input Go value to represent (int, string, bool, float, null, array, map, binary string)
 #   want: Expected node structure after representation
 #     kind: Expected node kind (Scalar, Sequence, Mapping)
-#     tag: Expected YAML tag (e.g., "!!int", "!!str", "!!binary")
+#     tag: Expected YAML tag (e.g. "!!int", "!!str", "!!binary")
 #     value: Expected scalar value (for Scalar nodes)
 #     content: Expected child nodes (array of node objects for Sequence/Mapping nodes)
 

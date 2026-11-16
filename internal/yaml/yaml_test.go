@@ -753,7 +753,7 @@ func runDecodeTest(t *testing.T, tc map[string]any) {
 	}
 
 	// Compare by marshaling both to YAML and comparing the output
-	// This handles type differences (e.g., int vs float with same value)
+	// This handles type differences (e.g. int vs float with same value)
 	actualYAML, err := yaml.Marshal(actual)
 	if err != nil {
 		t.Fatalf("failed to marshal actual: %v", err)

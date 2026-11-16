@@ -341,7 +341,7 @@ func (c *Constructor) constructBool(n *Node, resolved any, out reflect.Value) bo
 			}
 		}
 	case reflect.String:
-		// Allow bool to be constructed as string (e.g., true -> "true")
+		// Allow bool to be constructed as string (e.g. true -> "true")
 		out.SetString(n.Value)
 		return true
 	case reflect.Interface:

@@ -155,7 +155,7 @@ func (c *Composer) Compose() *Node {
 func (c *Composer) node(kind Kind, tag, value string) *Node {
 	var style Style
 	if tag != "" && tag != "!" {
-		// Normalize tag to short form (e.g., tag:yaml.org,2002:str -> !!str)
+		// Normalize tag to short form (e.g. tag:yaml.org,2002:str -> !!str)
 		tag = shortTag(tag)
 		style = TaggedStyle
 	}

@@ -129,7 +129,7 @@ func (r *TypeRegistry) ListTypes() []string {
 }
 
 // ValueRegistry maps string names to arbitrary constant values for test data.
-// This allows YAML test files to reference constants by name (e.g., "+Inf", "NaN", "MaxInt32").
+// This allows YAML test files to reference constants by name (e.g. "+Inf", "NaN", "MaxInt32").
 // Unlike ConstantRegistry which only handles ints, this handles any type.
 type ValueRegistry struct {
 	values map[string]any

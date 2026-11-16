@@ -286,8 +286,8 @@ func WithLineWidth(width int) Option {
 
 // WithUnicode controls whether non-ASCII characters are allowed in YAML output.
 //
-// When true, non-ASCII characters appear as-is (e.g., "café").
-// When false, non-ASCII characters are escaped (e.g., "caf\xE9").
+// When true, non-ASCII characters appear as-is (e.g. "café").
+// When false, non-ASCII characters are escaped (e.g. "caf\xE9").
 // When called without arguments, defaults to true.
 //
 // The default is true.
